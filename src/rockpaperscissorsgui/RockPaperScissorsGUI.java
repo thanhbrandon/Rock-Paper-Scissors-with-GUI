@@ -15,7 +15,6 @@ public class RockPaperScissorsGUI extends JFrame{
     /**
      * @param args the command line arguments
      */
-    private TitlePanel title; // Title panel
     //private ChoicesPanel choices; // Choices Panel
     //private ScoreboardPanel scoreboard; // Choices Panel
     private GamePanel game;
@@ -36,15 +35,13 @@ public class RockPaperScissorsGUI extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // Create a BorderLayout manager.
-        setLayout(new GridLayout(3, 1));
+        setLayout(new GridLayout(1, 2));
         
         // Create the custom panels.
-        title = new TitlePanel();
         //choices = new ChoicesPanel();
         //scoreboard = new ScoreboardPanel();
         game = new GamePanel();
         
-        add(title);
         //add(choices);
         //add(scoreboard);
         add(game);
@@ -58,9 +55,9 @@ public class RockPaperScissorsGUI extends JFrame{
     private void buildButtonPanel()
     {
         // Create a panel for the buttons.
-        buttonPanel = new JPanel(new GridLayout(1,3));
+        buttonPanel = new JPanel(new GridLayout(3,1));
         // Create the buttons.
-        calButton = new JButton("Calculate");
+        calButton = new JButton("Run Simulation");
         resetButton = new JButton("Reset");
         exitButton = new JButton("Exit");
        
@@ -85,7 +82,7 @@ public class RockPaperScissorsGUI extends JFrame{
     {
         public void actionPerformed(ActionEvent e)
         {
-            
+            game.resetScore();
         }
     }
     private class ExitButtonListener implements ActionListener

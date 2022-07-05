@@ -5,9 +5,11 @@
 package rockpaperscissorsgui;
 
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,13 +30,23 @@ public class GamePanel extends JPanel
     private String currentChoice = "";
     private int currentChoiceInt = -1; // To calculate the cost
     
-    private JPanel scoreboardPanel;
+    private JPanel winnerPanel;
     private JLabel yourChoice;
     private JLabel compChoice;
     private JLabel winner;
     private TextField yourChoiceField;
     private TextField compChoiceField;
     private TextField winnerField;
+    
+    private JPanel scoreboardPanel;
+    private JLabel yourScoreLabel;
+    private JLabel compScoreLabel;
+    private TextField yourScoreField;
+    private TextField compScoreField;
+    private int yourScore = 0;
+    private int compScore = 0;
+    
+    private TitlePanel title; // Title panel
     
     public void game(int input){
         // Creates choice menu for user
@@ -81,10 +93,14 @@ public class GamePanel extends JPanel
                 break;
             case 1: 
                 winnerField.setText("Computer");
+                compScore++;
+                compScoreField.setText(compScore + "");
                 //return 1;
                 break;
             case 2: 
                 winnerField.setText("You");
+                yourScore++;
+                yourScoreField.setText(yourScore + "");
                 //return 2;
                 break;
         };
@@ -95,25 +111,32 @@ public class GamePanel extends JPanel
     public GamePanel()
     {
         // Create a BorderLayout manager.
-        setLayout(new GridLayout(2, 1));
+        setLayout(new GridLayout(2, 2));
         
+        title = new TitlePanel();    
+        add(title);
          // Create the button panel.
         buildButtonPanel();
         add(buttonPanel);
         
-        // Create Scoreboard panel.
         buildScoreboardPanel();
         add(scoreboardPanel);
+        
+        // Create Scoreboard panel.
+        buildWinnerPanel();
+        add(winnerPanel);
     }
     
     // Constructor
      private void buildButtonPanel()
     {
-        buttonPanel = new JPanel(new GridLayout(3,1));
+        ImageIcon rockIcon = new ImageIcon(new ImageIcon("rock.png").getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT));
+        buttonPanel = new JPanel(new GridLayout(1,3));
         // Create a GridLayout manager with
         // four rows and two column.
         setLayout(new GridLayout(3, 1));
         rockButton = new JButton("Rock");
+        rockButton.setIcon(rockIcon);
         paperButton = new JButton("Paper");
         scissorsButton = new JButton("Scissors");
         
@@ -133,21 +156,27 @@ public class GamePanel extends JPanel
                 currentChoice = "Rock";
                 currentChoiceInt = 0;
                 yourChoiceField.setText(currentChoice);
+                compChoiceField.setText("");
+                winnerField.setText("");
             } else if (e.getSource() == paperButton) {
                 currentChoice = "Paper";
                 currentChoiceInt = 1;
                 yourChoiceField.setText(currentChoice);
+                compChoiceField.setText("");
+                winnerField.setText("");
             } else if (e.getSource() == scissorsButton) {
                 currentChoice = "Scissors";
                 currentChoiceInt = 2;
                 yourChoiceField.setText(currentChoice);
+                compChoiceField.setText("");
+                winnerField.setText("");
             }
         }
     }
     // Constructor
-    private void buildScoreboardPanel()
+    private void buildWinnerPanel()
     {
-        scoreboardPanel = new JPanel(new GridLayout(3,2));
+        winnerPanel = new JPanel(new GridLayout(3,2));
         
         yourChoice = new JLabel("Your Choice");
         compChoice = new JLabel("Computer Choice");
@@ -158,16 +187,40 @@ public class GamePanel extends JPanel
         winnerField = new TextField();
         
         // Add the buttons box to the panel.
-        scoreboardPanel.add(yourChoice);
-        scoreboardPanel.add(yourChoiceField);
-        scoreboardPanel.add(compChoice);
-        scoreboardPanel.add(compChoiceField);
-        scoreboardPanel.add(winner);
-        scoreboardPanel.add(winnerField);
+        winnerPanel.add(yourChoice);
+        winnerPanel.add(yourChoiceField);
+        winnerPanel.add(compChoice);
+        winnerPanel.add(compChoiceField);
+        winnerPanel.add(winner);
+        winnerPanel.add(winnerField);
     }
     
+    private void buildScoreboardPanel()
+    {
+        scoreboardPanel = new JPanel(new GridLayout(2,2));
+    
+        yourScoreLabel = new JLabel("Your Score");
+        compScoreLabel= new JLabel("Computer Score");;
+        yourScoreField = new TextField();
+        compScoreField = new TextField();
+        
+        yourScoreField.setText(yourScore + "");
+        compScoreField.setText(compScore + "");
+        
+        scoreboardPanel.add(yourScoreLabel);
+        scoreboardPanel.add(yourScoreField);
+        scoreboardPanel.add(compScoreLabel);
+        scoreboardPanel.add(compScoreField);
+    }
     public void runGame()
     {
         game(currentChoiceInt);
+    }
+        public void resetScore()
+    {
+        yourScore = 0;
+        compScore = 0;
+        yourScoreField.setText("0");
+        compScoreField.setText("0");
     }
 }
